@@ -1,4 +1,4 @@
-'use client'
+import { useEffect } from 'react';
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
@@ -7,13 +7,18 @@ import { PencilIcon } from 'lucide-react'
 import ProfileAvatar from '@/components/ProfileAvatar'
 
 export default function ProfilesPage() {
-  const router = useRouter()
-  const { profiles, setActiveProfile, isLoggedIn } = useStore()
-  const [isManaging, setIsManaging] = useState(false)
+  const router = useRouter();
+  const { profiles, setActiveProfile, isLoggedIn } = useStore();
+  const [isManaging, setIsManaging] = useState(false);
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      router.replace('/login');
+    }
+  }, [isLoggedIn, router]);
 
   if (!isLoggedIn) {
-    router.replace('/login')
-    return null
+    return null;
   }
 
   const handleSelectProfile = (profile: Profile) => {
